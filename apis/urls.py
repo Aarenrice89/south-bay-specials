@@ -1,4 +1,3 @@
-from django.contrib.auth import views as auth_views
 from django.urls import include, path
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 from rest_framework import routers
@@ -6,8 +5,6 @@ from rest_framework import routers
 v1_router = routers.SimpleRouter()
 
 v1_urlpatterns = [
-    # # custom app urls
-    # path("accounts/", include("django.contrib.auth.urls")),
     # drf-spectacular urls
     path("schema/", SpectacularAPIView.as_view(), name="schema"),
     path(
@@ -15,8 +12,9 @@ v1_urlpatterns = [
         SpectacularSwaggerView.as_view(url_name="schema"),
         name="swagger-ui",
     ),
+    # custom app urls
     path("specials/", include("specials.urls")),
-    path("accounts/", include("django.contrib.auth.urls")),
+    path("locations/", include("locations.urls")),
 ]
 
 v1_urlpatterns += v1_router.urls

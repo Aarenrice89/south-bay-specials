@@ -1,11 +1,11 @@
 from rest_framework import routers
 
-from specials import views
+from locations import views
 
 router = routers.SimpleRouter()
-router.register("", views.SpecialViewset, basename="")
+router.register("", views.LocationViewSet, basename="")
 
-app_name = "specials"
+app_name = "locations"
 
 urlpatterns = []
 urlpatterns += router.urls

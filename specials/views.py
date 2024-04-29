@@ -1,7 +1,9 @@
-from rest_framework.decorators import api_view
-from rest_framework.response import Response
+from rest_framework import viewsets
+
+from specials.models import Special
+from specials.serializers import SpecialSerializer
 
 
-@api_view(["GET"])
-def ping(request):
-    return Response("pong")
+class SpecialViewset(viewsets.ModelViewSet):
+    queryset = Special.objects.all()
+    serializer_class = SpecialSerializer
