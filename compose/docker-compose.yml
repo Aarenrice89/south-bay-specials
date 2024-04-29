@@ -1,0 +1,67 @@
+version: "3.8"
+
+name: south_bay_specials
+
+services:
+  db:
+    image: postgres:16
+    restart: "always"
+    env_file:
+      - ./envs/.env
+    expose:
+      - 5432
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    command: ["postgres", "-c", "log_statement=all"]
+
+  api: &app
+    build:
+      context: ../
+      dockerfile: ./compose/Dockerfile
+      target: "development_image"
+      # secrets:
+      #   - gitlab
+    restart: "always"
+    env_file:
+      - ./envs/.env
+    expose:
+      - 8080
+    depends_on:
+      - db
+      - setup
+      # - cache
+    # labels:
+    #   - "traefik.enable=true"
+    #   - "traefik.http.routers.api_${COMPOSE_PROJECT_NAME}_http.rule=Host(`api.great-valley-gainz.localhost`)"
+    #   - "traefik.http.routers.api_${COMPOSE_PROJECT_NAME}_http.tls=true"
+    #   - "traefik.http.routers.api_${COMPOSE_PROJECT_NAME}_http.entrypoints=websecure"
+    #   - "traefik.docker.network=proxy"
+    volumes:
+      - "../:/app"
+    stdin_open: true
+    tty: true
+    networks:
+      - default
+      # - proxy
+
+  setup:
+    <<: *app
+    depends_on:
+      - db
+    volumes: []
+    labels: []
+    environment:
+      - LOAD_INITIAL_DATA=true
+    command: ["bash", "./compose/services/wait-for-it.sh", "db:5432", "--", "bash", "./compose/services/run-setup.sh"]
+    restart: on-failure
+
+volumes:
+  db-data:
+
+# networks:
+#   proxy:
+#     external: true
+
+# secrets:
+#   gitlab:
+#     file: ./envs/gitlab.env

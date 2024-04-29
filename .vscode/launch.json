@@ -1,0 +1,38 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "Django Server",
+        "type": "python",
+        "request": "launch",
+        "stopOnEntry": false,
+        "program": "${workspaceFolder}/manage.py",
+        "args": [
+          "runserver", "0.0.0.0:8080"
+        ],
+        "django": true,
+        "justMyCode": true
+      },
+      {
+        "name": "PyTests",
+        "type": "python",
+        "request": "launch",
+        "purpose": ["debug-test"],
+        "console": "integratedTerminal",
+        "module": "pytest",
+        "args": [
+          "${file}", "--verbose"
+        ],
+        "django": true,
+        "justMyCode": true
+      },
+      {
+        "name": "Current File",
+        "type": "python",
+        "request": "launch",
+        "program": "${file}",
+        "console": "integratedTerminal",
+        "justMyCode": true
+      },
+    ]
+  }
