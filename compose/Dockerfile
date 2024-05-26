@@ -35,7 +35,7 @@ RUN poetry install
 
 COPY . .
 
-# CMD ["bash", "./compose/services/web/start-django.sh"]
+CMD ["bash", "./compose/services/start-django.sh"]
 
 
 # FROM app_base as prod_image

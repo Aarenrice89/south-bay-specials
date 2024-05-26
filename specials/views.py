@@ -1,5 +1,4 @@
 from rest_framework import viewsets
-
 from specials.models import Special
 from specials.serializers import SpecialSerializer
 

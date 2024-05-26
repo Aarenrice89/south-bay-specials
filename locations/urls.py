@@ -1,6 +1,5 @@
-from rest_framework import routers
-
 from locations import views
+from rest_framework import routers
 
 router = routers.SimpleRouter()
 router.register("", views.LocationViewSet, basename="")

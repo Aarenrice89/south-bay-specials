@@ -30,19 +30,19 @@ services:
       - db
       - setup
       # - cache
-    # labels:
-    #   - "traefik.enable=true"
-    #   - "traefik.http.routers.api_${COMPOSE_PROJECT_NAME}_http.rule=Host(`api.great-valley-gainz.localhost`)"
-    #   - "traefik.http.routers.api_${COMPOSE_PROJECT_NAME}_http.tls=true"
-    #   - "traefik.http.routers.api_${COMPOSE_PROJECT_NAME}_http.entrypoints=websecure"
-    #   - "traefik.docker.network=proxy"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.api_${COMPOSE_PROJECT_NAME}_http.rule=Host(`api.south-bay-specials.localhost`)"
+      - "traefik.http.routers.api_${COMPOSE_PROJECT_NAME}_http.tls=true"
+      - "traefik.http.routers.api_${COMPOSE_PROJECT_NAME}_http.entrypoints=websecure"
+      - "traefik.docker.network=proxy"
     volumes:
       - "../:/app"
     stdin_open: true
     tty: true
     networks:
       - default
-      # - proxy
+      - proxy
 
   setup:
     <<: *app
@@ -55,12 +55,61 @@ services:
     command: ["bash", "./compose/services/wait-for-it.sh", "db:5432", "--", "bash", "./compose/services/run-setup.sh"]
     restart: on-failure
 
+  # cache:
+  #   image: redis:alpine
+  #   restart: always
+  #   expose:
+  #     - "6379"
+
+  # celeryworker:
+  #   <<: *app
+  #   depends_on:
+  #     - db
+  #     - cache
+  #   volumes: []
+  #   ports: []
+  #   labels: []
+  #   command: ["bash", "./compose/services/web/start-celery.sh", "-s", "worker"]
+  #   networks:
+  #     - default
+
+  # celerybeat:
+  #   <<: *app
+  #   depends_on:
+  #     - db
+  #     - cache
+  #   volumes: []
+  #   ports: []
+  #   labels: []
+  #   command: ["bash", "./compose/services/web/start-celery.sh", "-s", "beat"]
+  #   networks:
+  #     - default
+
+  # celeryflower:
+  #   <<: *app
+  #   depends_on:
+  #     - db
+  #     - cache
+  #   volumes: []
+  #   ports: []
+  #   expose:
+  #     - 5555
+  #   labels:
+  #     - "traefik.enable=true"
+  #     - "traefik.http.routers.flower_${COMPOSE_PROJECT_NAME}_http.rule=Host(`flower.south-bay-specials.localhost`)"
+  #     - "traefik.http.routers.flower_${COMPOSE_PROJECT_NAME}_http.tls=true"
+  #     - "traefik.http.routers.flower_${COMPOSE_PROJECT_NAME}_http.entrypoints=websecure"
+  #     - "traefik.docker.network=proxy"
+  #   command: ["bash", "./compose/services/web/start-celery.sh", "-s", "flower"]
+  #   networks:
+  #     - default
+
 volumes:
   db-data:
 
-# networks:
-#   proxy:
-#     external: true
+networks:
+  proxy:
+    external: true
 
 # secrets:
 #   gitlab:

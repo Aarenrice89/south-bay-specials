@@ -1,0 +1,15 @@
+compose/*
+!compose/services/*.sh
+*/.env
+.dockerignore
+
+.git
+.gitlab
+.gitlab-ci.yml
+.gitignore
+
+.whitesource
+README.mkdocs
+
+**/__pycache__/
+**.pyc

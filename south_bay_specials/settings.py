@@ -31,7 +31,9 @@ SUPER_USER_PASSWORD = env("SUPER_USER_PASSWORD", default="password")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[])
+
+DJANGO_SETTINGS_MODULE = env.str("DJANGO_SETTINGS_MODULE", default="south_bay_specials.settings")
 
 
 # Application definition
@@ -148,4 +150,92 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_PERMISSIONS_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
 }
-REST_FRAMEWORK["DEFAULT_SCHEMA_CLASS"] = "drf_spectacular.openapi.AutoSchema"
+REST_FRAMEWORK["DEFAULT_SCHEMA_CLASS"] = "drf_spectacular.openapi.AutoSchema"\
+
+COOKIE_DOMAIN = env("COOKIE_DOMAIN")
+
+# https://docs.djangoproject.com/en/4.1/ref/csrf/
+CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS", default=[])
+
+# CORS
+CORS_ALLOWED_ORIGINS=env.list("CORS_ALLOWED_ORIGINS", default=[])
+CORS_ALLOW_CREDENTIALS= True
+
+CSRF_TRUSTED_ORIGINS.extend(CORS_ALLOWED_ORIGINS)
+
+
+# Redis
+# REDIS_HOST = env("REDIS_HOST", default="cache")
+# REDIS_PORT = env("REDIS_PORT", default="6379")
+# REDIS_DB = env("REDIS_DB", default=1)
+# REDIS_MEMOIZE_DB = env("REDIS_MEMOIZE_DB", default=2)
+# REDIS_CELERY_DB = env("REDIS_CELERY_DB", default=3)
+
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": f"redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#         }
+#     },
+#     "memoize": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": f"redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_MEMOIZE_DB}",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#         }
+#     },
+#     "celery": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": f"redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_CELERY_DB}",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#         }
+#     },
+# }
+
+# # Celery
+# CELERY_TIMEZONE = "UTC"
+# CELERY_TASK_TRACK_STARTED = True
+# CELERY_TASK_TIME_LIMIT = 30 * 60
+
+# CELERY_ACCEPT_CONTENT = ["json"]
+# CELERY_TASK_SERIALIZER = "json"
+
+# CELERY_BROKER_URL = f"redis://{REDIS_HOST}:{REDIS_PORT}/{REDIS_DB}"
+# CELERY_CACHE_BACKEND = "celery"
+# CELERY_RESULT_BACKEND = "django-cache"
+
+# CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+# CELERY_BROKER_CONNECTION_RETRY = True
+
+# Logging
+LOG_LEVEL = env("LOG_LEVEL", default="DEBUG" if DEBUG else "INFO")
+DJANGO_LOG_LEVEL = env("DJANGO_LOG_LEVEL", default="INFO")
+
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "formatters": {
+        "verbose": {
+            "format": "[{asctime}] [{process}] [{levelname}] [{pathname}:{funcName}:{lineno}] {message}",
+            "style": "{",
+            "datefmt": "%Y-%m-%d %H:%M:%S %z",
+        }
+    },
+    "handlers": {
+        "console": {"class": "logging.StreamHandler", "formatter": "verbose"}
+    },
+    "root": {
+        "handlers": ["console"],
+        "level": LOG_LEVEL,
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["console"],
+            "propagate": False,
+            "level": DJANGO_LOG_LEVEL,
+        }
+    }
+}

@@ -1,6 +1,5 @@
-from rest_framework import serializers
-
 from locations.serializers import LocationSerializer
+from rest_framework import serializers
 from specials.models import Special
 
 
