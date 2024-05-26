@@ -150,16 +150,15 @@ REST_FRAMEWORK = {
     ],
     "DEFAULT_PERMISSIONS_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
 }
-REST_FRAMEWORK["DEFAULT_SCHEMA_CLASS"] = "drf_spectacular.openapi.AutoSchema"\
-
+REST_FRAMEWORK["DEFAULT_SCHEMA_CLASS"] = "drf_spectacular.openapi.AutoSchema"
 COOKIE_DOMAIN = env("COOKIE_DOMAIN")
 
 # https://docs.djangoproject.com/en/4.1/ref/csrf/
 CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS", default=[])
 
 # CORS
-CORS_ALLOWED_ORIGINS=env.list("CORS_ALLOWED_ORIGINS", default=[])
-CORS_ALLOW_CREDENTIALS= True
+CORS_ALLOWED_ORIGINS = env.list("CORS_ALLOWED_ORIGINS", default=[])
+CORS_ALLOW_CREDENTIALS = True
 
 CSRF_TRUSTED_ORIGINS.extend(CORS_ALLOWED_ORIGINS)
 
@@ -224,9 +223,7 @@ LOGGING = {
             "datefmt": "%Y-%m-%d %H:%M:%S %z",
         }
     },
-    "handlers": {
-        "console": {"class": "logging.StreamHandler", "formatter": "verbose"}
-    },
+    "handlers": {"console": {"class": "logging.StreamHandler", "formatter": "verbose"}},
     "root": {
         "handlers": ["console"],
         "level": LOG_LEVEL,
@@ -237,5 +234,5 @@ LOGGING = {
             "propagate": False,
             "level": DJANGO_LOG_LEVEL,
         }
-    }
+    },
 }

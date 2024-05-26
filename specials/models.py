@@ -1,4 +1,5 @@
 from django.db import models
+
 from locations.models import Location
 from specials.choices import DAY_CHOICES
 
