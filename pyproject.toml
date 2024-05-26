@@ -27,3 +27,12 @@ ipython = "^8.19.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"
+
+[tool.black]
+include = '\.pyi?$'
+line-length = 119
+target-version = ['py311']
+
