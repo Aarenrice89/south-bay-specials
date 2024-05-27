@@ -32,7 +32,14 @@ build-backend = "poetry.core.masonry.api"
 profile = "black"
 
 [tool.black]
+extend-exclude = '''
+(
+    ^/manage.py
+    | south_bay_specials/wsgi.py
+    | south_bay_specials/asgi.py
+    | migrations
+)
+'''
 include = '\.pyi?$'
 line-length = 119
 target-version = ['py311']
-
