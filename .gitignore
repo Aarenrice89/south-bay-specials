@@ -161,3 +161,4 @@ cython_debug/
 
 .devcontainer
 .vscode
+.gitlab-ci.yml

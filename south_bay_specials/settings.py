@@ -39,6 +39,7 @@ DJANGO_SETTINGS_MODULE = env.str("DJANGO_SETTINGS_MODULE", default="south_bay_sp
 # Application definition
 
 INSTALLED_APPS = [
+    # "clearcache"
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
     # 3rd party apps
     "django_extensions",
     "rest_framework",
+    "corsheaders",
     "drf_spectacular",
     # Custom apps
     "specials.apps.SpecialsConfig",
@@ -57,6 +59,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -213,26 +216,26 @@ CSRF_TRUSTED_ORIGINS.extend(CORS_ALLOWED_ORIGINS)
 LOG_LEVEL = env("LOG_LEVEL", default="DEBUG" if DEBUG else "INFO")
 DJANGO_LOG_LEVEL = env("DJANGO_LOG_LEVEL", default="INFO")
 
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "formatters": {
-        "verbose": {
-            "format": "[{asctime}] [{process}] [{levelname}] [{pathname}:{funcName}:{lineno}] {message}",
-            "style": "{",
-            "datefmt": "%Y-%m-%d %H:%M:%S %z",
-        }
-    },
-    "handlers": {"console": {"class": "logging.StreamHandler", "formatter": "verbose"}},
-    "root": {
-        "handlers": ["console"],
-        "level": LOG_LEVEL,
-    },
-    "loggers": {
-        "django": {
-            "handlers": ["console"],
-            "propagate": False,
-            "level": DJANGO_LOG_LEVEL,
-        }
-    },
-}
+# LOGGING = {
+#     "version": 1,
+#     "disable_existing_loggers": False,
+#     "formatters": {
+#         "verbose": {
+#             "format": "[{asctime}] [{process}] [{levelname}] [{pathname}:{funcName}:{lineno}] {message}",
+#             "style": "{",
+#             "datefmt": "%Y-%m-%d %H:%M:%S %z",
+#         }
+#     },
+#     "handlers": {"console": {"class": "logging.StreamHandler", "formatter": "verbose"}},
+#     "root": {
+#         "handlers": ["console"],
+#         "level": LOG_LEVEL,
+#     },
+#     "loggers": {
+#         "django": {
+#             "handlers": ["console"],
+#             "propagate": False,
+#             "level": DJANGO_LOG_LEVEL,
+#         }
+#     },
+# }

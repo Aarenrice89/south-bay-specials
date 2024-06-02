@@ -17,7 +17,7 @@ services:
   api: &app
     build:
       context: ../
-      dockerfile: ./compose/Dockerfile
+      dockerfile: ./compose/services/Dockerfile
       target: "development_image"
       # secrets:
       #   - gitlab
