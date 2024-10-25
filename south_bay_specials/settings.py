@@ -149,7 +149,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.BasicAuthentication",
-        "rest_framework.authentication.SessionAuthentication",
+        # "rest_framework.authentication.SessionAuthentication",
     ],
     "DEFAULT_PERMISSIONS_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
 }
@@ -239,3 +239,7 @@ DJANGO_LOG_LEVEL = env("DJANGO_LOG_LEVEL", default="INFO")
 #         }
 #     },
 # }
+
+
+# Google Maps API
+MAPS_API_KEY = env("MAPS_API_KEY")

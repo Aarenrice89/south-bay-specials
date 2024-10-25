@@ -1,3 +1,5 @@
-# from django.contrib import admin
+from django.contrib import admin
 
-# Register your models here.
+from specials.models import Special
+
+admin.site.register(Special)
