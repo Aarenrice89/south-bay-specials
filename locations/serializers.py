@@ -12,6 +12,7 @@ class LocationSerializer(serializers.ModelSerializer):
             "phone_number",
             "website",
             "google_place_id",
+            "google_url",
             "latitude",
             "longitude",
         )
