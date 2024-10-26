@@ -9,13 +9,10 @@ class LocationSerializer(serializers.ModelSerializer):
         fields = (
             "name",
             "address",
-            "city",
-            "state",
-            "country",
-            "zipcode",
-            "google_link",
+            "phone_number",
+            "website",
+            "google_place_id",
+            "google_url",
+            "latitude",
+            "longitude",
         )
-
-    def validate(self, data):
-        print()
-        return data

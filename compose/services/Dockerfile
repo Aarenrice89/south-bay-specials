@@ -36,6 +36,7 @@ RUN poetry install
 COPY . .
 
 CMD ["bash", "./compose/services/start-django.sh"]
+# manage.py createsuperuser --noinput --username DJANGO_SUPERUSER_USERNAME --email DJANGO_SUPERUSER_EMAIL --password DJANGO_SUPERUSER_PASSWORD
 
 
 # FROM app_base as prod_image

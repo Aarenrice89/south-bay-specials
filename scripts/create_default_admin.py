@@ -10,12 +10,11 @@ logger = logging.getLogger(__name__)
 def run():
     User = get_user_model()
     try:
-        User.objects.create(
-            username="defaultadmin",
+        User.objects.create_superuser(
+            username="admin",
             first_name="default",
             last_name="admin",
-            email="defaultadmin@sbs.com",
-            is_superuser=True,
+            email="admin@sbs.com",
             password=settings.SUPER_USER_PASSWORD,
         )
         logger.info("Createcd default admin")

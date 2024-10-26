@@ -8,7 +8,7 @@ class Special(models.Model):
     name = models.CharField(max_length=100)
     location = models.ForeignKey(Location, on_delete=models.CASCADE)
     description = models.TextField()
-    limitations = models.TextField(blank=True)
+    limitations = models.TextField(null=True)
     day_of_week = models.CharField(max_length=9, choices=DAY_CHOICES)
     start_time = models.TimeField(null=True)
     end_time = models.TimeField(null=True)
