@@ -16,3 +16,16 @@ class LocationSerializer(serializers.ModelSerializer):
             "latitude",
             "longitude",
         )
+
+
+class LocationExcludeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Location
+        fields = (
+            "name",
+            "address",
+            "phone_number",
+            "website",
+            "google_place_id",
+            "google_url",
+        )

@@ -162,3 +162,5 @@ cython_debug/
 .devcontainer
 .vscode
 .gitlab-ci.yml
+
+scripts/adhoc_script.py
