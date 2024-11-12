@@ -3,7 +3,7 @@ from typing import Any
 
 from rest_framework import serializers
 
-from locations.serializers import LocationSerializer
+from locations.serializers import LocationExcludeSerializer, LocationSerializer
 from specials.models import Special
 
 logger = logging.getLogger(__name__)
@@ -54,3 +54,29 @@ class SpecialModelSerializer(serializers.ModelSerializer):
             "is_active",
             "location",
         )
+
+
+class SpecialModelExcludeSerializer(SpecialModelSerializer):
+    class Meta:
+        model = Special
+        fields = (
+            "name",
+            "description",
+            "limitations",
+            "day_of_week",
+            "start_time",
+            "end_time",
+        )
+
+
+class GroupedSpecialSerializer(serializers.Serializer):
+    location = serializers.SerializerMethodField()
+    specials = serializers.SerializerMethodField()
+
+    def get_location(self, obj) -> LocationExcludeSerializer:
+        return LocationExcludeSerializer(obj).data
+
+    def get_specials(self, obj) -> SpecialModelExcludeSerializer:
+        return SpecialModelExcludeSerializer(
+            obj.special_set.filter(day_of_week__in=self.context["days"]), many=True
+        ).data
