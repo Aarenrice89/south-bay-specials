@@ -10,6 +10,7 @@ Before you begin, ensure you have the following installed:
 
 - [Git](https://git-scm.com/)
 - [Docker Desktop](https://www.docker.com/products/docker-desktop)
+- [Python 3.12](https://www.python.org/downloads/release/python-3126/)
 
 ## Project Repositories
 
@@ -25,7 +26,23 @@ This project consists of multiple repositories:
 
 Download and install Docker Desktop from Docker's official website. Follow the installation instructions for your operating system.
 
-### Step 2: Clone the Repositories Locally
+### Step 2: Install Python and pre-commit
+
+Download and install Python 3.12 according to website instructions
+
+Install the [`pre-commit`](https://pre-commit.com/) python package globally
+
+```sh
+pip install pre-commit
+```
+
+Navigate to backend project root and install the git hooks script by running
+
+```sh
+pre-commit install
+```
+
+### Step 3: Clone the Repositories Locally
 
 Clone the South Bay Specials repositories:
 
@@ -39,7 +56,7 @@ git clone git@github.com:Aarenrice89/south-bay-specials.git
 git clone git@github.com:Aarenrice89/south-bay-specials-frontend.git
 ```
 
-### Step 3: Set Up Proxy and Docker Network
+### Step 4: Set Up Proxy and Docker Network
 
 Set up the Docker network `proxy` to manage communication between containers:
 
@@ -73,11 +90,11 @@ Firefox uses its own certificate manager
 - Select import
 - Import the `ca.crt` file from the certs folder
 
-### Step 4: Add project Environment Variables
+### Step 5: Add project Environment Variables
 
 Create a .env file in the `/compose/envs` directory of the backend repository with the content supplied in the template file
 
-### Step 5: Build and Run the Containers
+### Step 6: Build and Run the Containers
 
 Navigate to the backend repository and run the following commands to build and start the backend Docker containers:
 
@@ -89,11 +106,11 @@ or use VSCode Dev Container for extended development features
 
 [VS Code Dev Container](https://code.visualstudio.com/docs/devcontainers/containers)
 
-### Step 6: Start the FE React application
+### Step 7: Start the FE React application
 
 See README for the [frontend](https://github.com/Aarenrice89/south-bay-specials-frontend) application for installation and setup instructions
 
-### Step 7: Access the Application
+### Step 8: Access the Application
 
 Once the containers are up and running, you can access the application at:
 
