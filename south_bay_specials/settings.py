@@ -239,7 +239,3 @@ DJANGO_LOG_LEVEL = env("DJANGO_LOG_LEVEL", default="INFO")
 #         }
 #     },
 # }
-
-
-# Google Maps API
-MAPS_API_KEY = env("MAPS_API_KEY")
