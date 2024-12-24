@@ -27,4 +27,5 @@ urlpatterns = [
     path("v1/", include(v1_urlpatterns)),
     path("auth/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("auth/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
+    path("auth/register/", api_views.register, name="register"),
 ]

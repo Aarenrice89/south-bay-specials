@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from locations.models import Location
 from specials.choices import DAY_CHOICES, get_day_list_from_query_params
 from specials.models import Special
+from specials.permissions import IsAuthenticatedPostPermissions
 from specials.serializers import (
     GroupedSpecialSerializer,
     SpecialModelSerializer,
@@ -22,6 +23,7 @@ logger = logging.getLogger(__name__)
 class SpecialViewset(viewsets.ModelViewSet):
     queryset = Special.objects.filter(is_active=True)
     serializer_class = SpecialSerializer
+    permission_classes = [IsAuthenticatedPostPermissions]
 
     def list(self, request: Request, *args, **kwargs) -> Response:
         queryset = self.get_queryset()
