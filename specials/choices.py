@@ -23,13 +23,20 @@ DAY_CHOICES = [
 ]
 
 
-def get_day_list_from_query_params(param: str | None) -> list[str]:
+def get_days_from_query_params(params: list[str]) -> set[str]:
+    days = set()
+    if not params:
+        return {MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY, WEEKEND, WEEKDAY}
+    for param in params:
+        days.update(get_day_list(param))
+    return days
+
+
+def get_day_list(param: str) -> list[str]:
     if param == "weekday":
         return [MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, WEEKDAY]
     elif param == "weekend":
         return [SATURDAY, SUNDAY, WEEKEND]
-    elif param is None:
-        return [MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY, WEEKEND, WEEKDAY]
     elif param in [SATURDAY, SUNDAY]:
         return [param, WEEKEND]
     return [param, WEEKDAY]

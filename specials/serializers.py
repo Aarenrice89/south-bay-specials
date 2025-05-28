@@ -10,9 +10,9 @@ logger = logging.getLogger(__name__)
 
 
 class SpecialSerializer(serializers.ModelSerializer):
-    limitations = serializers.CharField(allow_null=True)
-    start_time = serializers.TimeField(allow_null=True)
-    end_time = serializers.TimeField(allow_null=True)
+    limitations = serializers.CharField(allow_null=True, required=False, default=None)
+    start_time = serializers.TimeField(allow_null=True, required=False, default=None)
+    end_time = serializers.TimeField(allow_null=True, required=False, default=None)
 
     class Meta:
         model = Special
@@ -25,10 +25,10 @@ class SpecialSerializer(serializers.ModelSerializer):
             "end_time",
         )
 
-    def validate(self, data):
-        if Special.objects.filter(location=self.context.get("location"), **data).exists():
+    def validate(self, attrs):
+        if Special.objects.filter(location=self.context.get("location"), **attrs).exists():
             raise serializers.ValidationError("This special already exists.")
-        return data
+        return attrs
 
     def create(self, validated_data: dict[str, Any]) -> Special:
         return Special.objects.create(location=self.context.get("location"), **validated_data)
@@ -56,7 +56,7 @@ class SpecialModelSerializer(serializers.ModelSerializer):
         )
 
 
-class SpecialModelExcludeSerializer(SpecialModelSerializer):
+class SpecialModelExcludeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Special
         fields = (
@@ -67,16 +67,3 @@ class SpecialModelExcludeSerializer(SpecialModelSerializer):
             "start_time",
             "end_time",
         )
-
-
-class GroupedSpecialSerializer(serializers.Serializer):
-    location = serializers.SerializerMethodField()
-    specials = serializers.SerializerMethodField()
-
-    def get_location(self, obj) -> LocationExcludeSerializer:
-        return LocationExcludeSerializer(obj).data
-
-    def get_specials(self, obj) -> SpecialModelExcludeSerializer:
-        return SpecialModelExcludeSerializer(
-            obj.special_set.filter(day_of_week__in=self.context["days"]), many=True
-        ).data

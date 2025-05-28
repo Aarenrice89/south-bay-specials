@@ -19,6 +19,7 @@ psycopg2-binary = "^2.9.9"
 django-cors-headers = "^3.13.0"
 gunicorn = "^21.1.0"
 djangorestframework-simplejwt = "^5.3.1"
+django-filter = "^25.1"
 
 [tool.poetry.group.dev.dependencies]
 black = "^23.12.1"
