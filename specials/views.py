@@ -3,19 +3,18 @@ from collections import defaultdict
 
 from django.db.models import Q
 from django_filters import rest_framework as filters
-from drf_spectacular.utils import OpenApiParameter, extend_schema
 from rest_framework import status, viewsets
-from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework.response import Response
 
 from locations.models import Location
-from locations.serializers import LocationExcludeSerializer
-from specials.choices import DAY_CHOICES, get_days_from_query_params
+from locations.serializers import LocationSerializer
+from specials.choices import get_days_from_query_params
 from specials.filters import SpecialFilter
 from specials.models import Special
 from specials.permissions import IsAuthenticatedPostPermissions
 from specials.serializers import (
+    GroupedSpecialSerializer,
     SpecialModelExcludeSerializer,
     SpecialModelSerializer,
     SpecialSerializer,
@@ -49,10 +48,10 @@ class ListGroupedSpecialsView(viewsets.generics.ListAPIView):
     It is used in the frontend to display grouped specials.
     """
 
-    queryset = Special.objects.filter(is_active=True)
     permission_classes = [IsAuthenticatedPostPermissions]
     filter_backends = (filters.DjangoFilterBackend,)
     filterset_class = SpecialFilter
+    serializer_class = GroupedSpecialSerializer
 
     def get_queryset(self):
         days: set[str] = get_days_from_query_params(self.request.query_params.getlist("day_of_week"))
@@ -65,7 +64,7 @@ class ListGroupedSpecialsView(viewsets.generics.ListAPIView):
             grouped[special.location].append(special)
         results = [
             {
-                "location": LocationExcludeSerializer(location).data,
+                "location": LocationSerializer(location).data,
                 "specials": [SpecialModelExcludeSerializer(x).data for x in specials_for_location],
             }
             for location, specials_for_location in grouped.items()

@@ -67,3 +67,8 @@ class SpecialModelExcludeSerializer(serializers.ModelSerializer):
             "start_time",
             "end_time",
         )
+
+
+class GroupedSpecialSerializer(serializers.Serializer):
+    location = LocationSerializer()
+    specials = SpecialModelExcludeSerializer(many=True)
