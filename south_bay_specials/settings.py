@@ -15,6 +15,8 @@ from pathlib import Path
 
 import environ
 
+from apis.constants import LOCAL, PRODUCTION
+
 env = environ.FileAwareEnv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -28,6 +30,13 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = env("DJANGO_SECRET_KEY")
 
 SUPER_USER_PASSWORD = env("SUPER_USER_PASSWORD", default="password")
+
+ENVIRONMENT = env("ENVIRONMENT", default=PRODUCTION)
+if ENVIRONMENT not in (LOCAL, PRODUCTION):
+    raise ValueError(f"Invalid environment: {ENVIRONMENT}. Must be one of: {LOCAL}, {PRODUCTION}.")
+
+SPECIALS_LOAD_FILE = env("SPECIALS_LOAD_FILE", default=None)
+BYPASS_LOAD_SPECIALS = env.bool("BYPASS_LOAD_SPECIALS", default=False)
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -161,7 +170,7 @@ SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=env("JWT_ACCESS_TOKEN_TTL_MINUTES", default=30)),
     "REFRESH_TOKEN_LIFETIME": timedelta(minutes=90),
     "ROTATE_REFRESH_TOKENS": True,
-    "BLACKLIST_AFTER_ROTATION": True,
+    "BLACKLIST_AFTER_ROTATION": False,
     "UPDATE_LAST_LOGIN": False,
     "ALGORITHM": "HS256",
     "SIGNING_KEY": SECRET_KEY,
@@ -180,10 +189,10 @@ SIMPLE_JWT = {
     "TOKEN_TYPE_CLAIM": "token_type",
     "TOKEN_USER_CLASS": "rest_framework_simplejwt.models.TokenUser",
     "JTI_CLAIM": "jti",
+    "TOKEN_OBTAIN_SERIALIZER": "apis.serializers.MyTokenObtainPairSerializer",
     # "SLIDING_TOKEN_REFRESH_EXP_CLAIM": "refresh_exp",
     # "SLIDING_TOKEN_LIFETIME": timedelta(minutes=5),
     # "SLIDING_TOKEN_REFRESH_LIFETIME": timedelta(days=1),
-    "TOKEN_OBTAIN_SERIALIZER": "apis.serializers.MyTokenObtainPairSerializer",
     # "TOKEN_REFRESH_SERIALIZER": "rest_framework_simplejwt.serializers.TokenRefreshSerializer",
     # "TOKEN_VERIFY_SERIALIZER": "rest_framework_simplejwt.serializers.TokenVerifySerializer",
     # "TOKEN_BLACKLIST_SERIALIZER": "rest_framework_simplejwt.serializers.TokenBlacklistSerializer",

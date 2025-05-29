@@ -164,3 +164,4 @@ cython_debug/
 .gitlab-ci.yml
 
 scripts/adhoc_script.py
+scripts/seed_data/*
