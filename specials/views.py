@@ -9,7 +9,6 @@ from rest_framework.response import Response
 
 from locations.models import Location
 from locations.serializers import LocationSerializer
-from specials.choices import get_days_from_query_params
 from specials.filters import SpecialFilter
 from specials.models import Special
 from specials.permissions import IsAuthenticatedPostPermissions
@@ -54,8 +53,7 @@ class ListGroupedSpecialsView(viewsets.generics.ListAPIView):
     serializer_class = GroupedSpecialSerializer
 
     def get_queryset(self):
-        days: set[str] = get_days_from_query_params(self.request.query_params.getlist("day_of_week"))
-        return Special.objects.filter(Q(is_active=True) & Q(day_of_week__in=days))
+        return Special.objects.filter(is_active=True)
 
     def list(self, request: Request, *args, **kwargs) -> Response:
         qs = self.filter_queryset(self.get_queryset())
