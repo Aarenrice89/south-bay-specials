@@ -1,7 +1,8 @@
+import json
 import logging
 from collections import defaultdict
 
-from django.db.models import Q
+from django.http import HttpResponse
 from django_filters import rest_framework as filters
 from rest_framework import status, viewsets
 from rest_framework.request import Request
@@ -68,3 +69,16 @@ class ListGroupedSpecialsView(viewsets.generics.ListAPIView):
             for location, specials_for_location in grouped.items()
         ]
         return Response(results, status=status.HTTP_200_OK)
+
+
+class ExportSpecialsToCSV(viewsets.generics.ListAPIView):
+    permission_classes = [IsAuthenticatedPostPermissions]
+    serializer_class = SpecialModelSerializer
+    queryset = Special.objects.all().select_related("location")
+
+    def list(self, request: Request, *args, **kwargs) -> HttpResponse:
+        serializer = self.serializer_class(self.get_queryset(), many=True)
+        # Prepare CSV response
+        response = HttpResponse(json.dumps(serializer.data, indent=2), content_type="application/json")
+        response["Content-Disposition"] = 'attachment; filename="specials.json"'
+        return response
